@@ -5,20 +5,260 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GDD Interactivo - VR Therapy Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
+        /* Smooth Scroll con offset para header sticky */
+        html {
+            scroll-padding-top: 80px;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
+
+        /* Mejoras de Performance */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Focus visible para accesibilidad */
+        *:focus-visible {
+            outline: 3px solid #10BAD4;
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        /* Animaciones optimizadas */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(16, 186, 212, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(16, 186, 212, 0);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .animate-slide-down {
+            animation: slideDown 0.3s ease-out;
+        }
+
+        /* Tabs mejorados */
+        .tab-btn {
+            flex-grow: 1;
+            padding: 1rem 0.75rem;
+            text-align: center;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 3px solid transparent;
+            position: relative;
+        }
+
+        .tab-btn::before {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #10BAD4, #C3D52A);
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tab-btn:hover {
+            background-color: #f9fafb;
+            color: #374151;
+        }
+
+        .tab-btn.active-tab {
+            color: #10BAD4;
+        }
+
+        .tab-btn.active-tab::before {
+            transform: scaleX(1);
+        }
+
+        @media (min-width: 768px) {
+            .tab-btn {
+                font-size: 1rem;
+                padding: 1.25rem 1rem;
+            }
+        }
+
+        /* Botones de sala mejorados */
+        .sala-btn {
+            padding: 1.25rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #10BAD4;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #10BAD4;
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(16, 186, 212, 0.1);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sala-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .sala-btn:hover {
+            background: linear-gradient(135deg, #f0faff 0%, #e0f7fb 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(16, 186, 212, 0.25);
+            border-color: #0ea5c0;
+        }
+
+        .sala-btn:hover::before {
+            left: 100%;
+        }
+
+        .sala-btn.active-sala {
+            background: linear-gradient(135deg, #10BAD4 0%, #0ea5c0 100%);
+            color: white;
+            border-color: #0ea5c0;
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(16, 186, 212, 0.4);
+            animation: pulse-glow 2s infinite;
+        }
+
+        /* Cards mejoradas */
+        .metric-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            border-bottom: 4px solid #10BAD4;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #10BAD4, #C3D52A);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .metric-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(16, 186, 212, 0.2);
+        }
+
+        .metric-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Mejora visual del panel de detalles */
+        #sala-detail-panel {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 2px solid #e2e8f0;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Scroll suave mejorado */
+        @media (prefers-reduced-motion: no-preference) {
+            html {
+                scroll-behavior: smooth;
+            }
+        }
+
+        /* Números de fase con animación */
+        .phase-number {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .phase-number:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        /* Footer links hover */
+        footer a {
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #10BAD4;
+        }
+
+        /* Mobile menu mejorado */
+        #mobile-menu {
+            animation: slideDown 0.3s ease-out;
+        }
+
+        #mobile-menu a {
+            transition: all 0.2s ease;
+        }
+
+        #mobile-menu a:hover {
+            background-color: #f0faff;
+            padding-left: 1.5rem;
+        }
+
+        /* Detalle de sala cards */
+        .sala-detail-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sala-detail-card:hover {
+            box-shadow: 0 8px 16px rgba(16, 186, 212, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .sala-detail-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
         }
     </style>
     <script>
@@ -43,150 +283,151 @@
 </head>
 <body class="bg-neutral-100 text-neutral-800 font-sans antialiased">
 
-    <!-- Header -->
-    <header class="sticky top-0 z-50 bg-white shadow-md">
+    <!-- Header con mejor sombra -->
+    <header class="sticky top-0 z-50 bg-white shadow-lg backdrop-blur-sm bg-opacity-95">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
-            <div class="flex-shrink-0">
-                <!-- LOGO AUMENTADO DE TAMAÑO (h-16) -->
+            <div class="flex-shrink-0 transition-transform hover:scale-105">
                 <img class="h-16 w-auto" src="image_43fcab.png" alt="Logo VR Therapy Center" onerror="this.src='https://placehold.co/150x64/10BAD4/white?text=VR+Therapy+Center'">
             </div>
-            <div class="hidden md:flex space-x-6">
-                <a href="#vision" class="text-gray-600 hover:text-CybertronixBlue transition-colors">Visión</a>
-                <a href="#pilares" class="text-gray-600 hover:text-CybertronixBlue transition-colors">Pilares de Diseño</a>
-                <a href="#mecanicas" class="text-gray-600 hover:text-CybertronixBlue transition-colors">Mecánicas</a>
-                <a href="#entorno" class="text-gray-600 hover:text-CybertronixBlue transition-colors">Entorno</a>
-                <a href="#estrategia" class="text-gray-600 hover:text-CybertronixBlue transition-colors">Estrategia</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#vision" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Visión">Visión</a>
+                <a href="#pilares" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Pilares de Diseño">Pilares de Diseño</a>
+                <a href="#mecanicas" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Mecánicas">Mecánicas</a>
+                <a href="#entorno" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Entorno">Entorno</a>
+                <a href="#estrategia" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Estrategia">Estrategia</a>
             </div>
             <div class="md:hidden">
-                <button id="mobile-menu-btn" class="text-gray-600 hover:text-CybertronixBlue">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                <button id="mobile-menu-btn" class="text-gray-700 hover:text-CybertronixBlue transition-colors p-2" aria-label="Abrir menú de navegación">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
                 </button>
             </div>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg">
-            <a href="#vision" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Visión</a>
-            <a href="#pilares" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Pilares de Diseño</a>
-            <a href="#mecanicas" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Mecánicas</a>
-            <a href="#entorno" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Entorno</a>
-            <a href="#estrategia" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Estrategia</a>
+        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg border-t border-gray-100">
+            <a href="#vision" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Visión</a>
+            <a href="#pilares" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Pilares de Diseño</a>
+            <a href="#mecanicas" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Mecánicas</a>
+            <a href="#entorno" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Entorno</a>
+            <a href="#estrategia" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Estrategia</a>
         </div>
     </header>
 
     <main>
         <!-- 1.0 Visión General -->
-        <section id="vision" class="pt-16 pb-20 bg-white">
-            <div class="max-w-5xl mx-auto px-6 text-center">
-                <h1 class="text-4xl md:text-5xl font-bold text-CybertronixBlue mb-4">VR Therapy Center</h1>
-                <p class="text-xl md:text-2xl text-neutral-800 mb-6">
+        <section id="vision" class="pt-20 pb-24 bg-gradient-to-b from-white to-neutral-100">
+            <div class="max-w-5xl mx-auto px-6 text-center animate-fade-in-up">
+                <h1 class="text-5xl md:text-6xl font-extrabold text-CybertronixBlue mb-6 leading-tight">VR Therapy Center</h1>
+                <p class="text-xl md:text-2xl text-neutral-800 mb-8 leading-relaxed">
                     Una plataforma de Realidad Virtual diseñada para la rehabilitación y terapia física, apta para 
                     <span class="font-bold text-CybertronixGreen">todas las edades</span>.
                 </p>
-                <p class="text-lg text-gray-600 italic border-l-4 border-CybertronixGreen pl-4">
+                <p class="text-lg md:text-xl text-gray-700 italic border-l-4 border-CybertronixGreen pl-6 py-4 bg-white rounded-r-lg shadow-sm max-w-3xl mx-auto">
                     "Tu centro de rehabilitación virtual personal. Realiza ejercicios terapéuticos divertidos diseñados por profesionales para mejorar tu movilidad, seguir tu progreso y potenciar tu bienestar físico."
                 </p>
             </div>
 
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6 mt-16">
-                <!-- Tarjeta de Métricas: Plataforma -->
-                <div class="bg-white shadow-xl rounded-lg p-6 border-b-4 border-CybertronixBlue">
-                    <h3 class="text-lg font-semibold text-CybertronixBlue mb-2">Plataforma Principal</h3>
-                    <p class="text-3xl font-bold">Meta Quest 2-3</p>
-                    <p class="text-gray-600 mt-1">Prioridad alta por ser inalámbrico, accesible y portátil.</p>
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 px-6 mt-20">
+                <div class="metric-card animate-fade-in-up" style="animation-delay: 0.1s;">
+                    <div class="text-4xl mb-3">🎮</div>
+                    <h3 class="text-lg font-bold text-CybertronixBlue mb-3">Plataforma Principal</h3>
+                    <p class="text-3xl font-extrabold text-gray-900 mb-2">Meta Quest 2-3</p>
+                    <p class="text-gray-600 leading-relaxed">Prioridad alta por ser inalámbrico, accesible y portátil.</p>
                 </div>
-                <!-- Tarjeta de Métricas: Público -->
-                <div class="bg-white shadow-xl rounded-lg p-6 border-b-4 border-CybertronixBlue">
-                    <h3 class="text-lg font-semibold text-CybertronixBlue mb-2">Público Objetivo</h3>
-                    <p class="text-3xl font-bold">Todas las Edades</p>
-                    <p class="text-gray-600 mt-1">Desde niños hasta personas mayores. Nivel de experiencia VR: <span class="font-bold">Novato</span>.</p>
+                
+                <div class="metric-card animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="text-4xl mb-3">👥</div>
+                    <h3 class="text-lg font-bold text-CybertronixBlue mb-3">Público Objetivo</h3>
+                    <p class="text-3xl font-extrabold text-gray-900 mb-2">Todas las Edades</p>
+                    <p class="text-gray-600 leading-relaxed">Desde niños hasta personas mayores. Nivel: <span class="font-bold">Novato</span>.</p>
                 </div>
-                <!-- Tarjeta de Métricas: Género -->
-                <div class="bg-white shadow-xl rounded-lg p-6 border-b-4 border-CybertronixBlue">
-                    <h3 class="text-lg font-semibold text-CybertronixBlue mb-2">Género</h3>
-                    <p class="text-3xl font-bold">Serious Game</p>
-                    <p class="text-gray-600 mt-1">Exergame de Terapia y Rehabilitación VR.</p>
+                
+                <div class="metric-card animate-fade-in-up" style="animation-delay: 0.3s;">
+                    <div class="text-4xl mb-3">🎯</div>
+                    <h3 class="text-lg font-bold text-CybertronixBlue mb-3">Género</h3>
+                    <p class="text-3xl font-extrabold text-gray-900 mb-2">Serious Game</p>
+                    <p class="text-gray-600 leading-relaxed">Exergame de Terapia y Rehabilitación VR.</p>
                 </div>
             </div>
         </section>
 
         <!-- 2.0 Pilares del Diseño VR -->
-        <section id="pilares" class="py-20 bg-neutral-100">
+        <section id="pilares" class="py-24 bg-white">
             <div class="max-w-7xl mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center mb-12">Pilares del Diseño VR y UX</h2>
+                <h2 class="text-4xl font-extrabold text-center mb-16 text-gray-900">Pilares del Diseño VR y UX</h2>
                 
-                <div class="max-w-4xl mx-auto">
-                    <!-- Controles de Pestañas -->
-                    <div class="flex border-b border-gray-300">
-                        <button class="tab-btn active-tab" data-tab="comodidad">
-                            <span class="text-2xl">🥇</span> Comodidad y Salud
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex border-b-2 border-gray-200">
+                        <button class="tab-btn active-tab" data-tab="comodidad" aria-label="Ver información sobre Comodidad y Salud">
+                            <span class="text-2xl block mb-1">🥇</span> Comodidad y Salud
                         </button>
-                        <button class="tab-btn" data-tab="inmersion">
-                            <span class="text-2xl">🌌</span> Inmersión y Presencia
+                        <button class="tab-btn" data-tab="inmersion" aria-label="Ver información sobre Inmersión y Presencia">
+                            <span class="text-2xl block mb-1">🌌</span> Inmersión y Presencia
                         </button>
-                        <button class="tab-btn" data-tab="interaccion">
-                            <span class="text-2xl">✋</span> Interacción y Háptica
+                        <button class="tab-btn" data-tab="interaccion" aria-label="Ver información sobre Interacción y Háptica">
+                            <span class="text-2xl block mb-1">✋</span> Interacción y Háptica
                         </button>
                     </div>
 
-                    <!-- Contenido de Pestañas -->
-                    <div class="bg-white shadow-lg rounded-b-lg p-6 md:p-10">
-                        <!-- Pestaña 1: Comodidad (Activa por defecto) -->
+                    <div class="bg-white shadow-xl rounded-b-2xl p-8 md:p-12 border border-gray-100">
+                        <!-- Pestaña 1: Comodidad -->
                         <div id="comodidad" class="tab-content">
-                            <h3 class="text-2xl font-bold text-CybertronixBlue mb-4">Prioridad #1: Comodidad del Paciente</h3>
-                            <p class="text-lg text-gray-700 mb-6">Las opciones de confort son el núcleo del diseño, no un extra. El objetivo es <span class="font-bold">cero mareo</span>.</p>
-                            <ul class="space-y-4">
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">Modo Principal: Sentado.</strong> Ajuste de altura automático y manual para accesibilidad total.</div>
+                            <h3 class="text-3xl font-bold text-CybertronixBlue mb-6">Prioridad #1: Comodidad del Paciente</h3>
+                            <p class="text-lg text-gray-700 mb-8 leading-relaxed">Las opciones de confort son el núcleo del diseño, no un extra. El objetivo es <span class="font-bold text-CybertronixBlue">cero mareo</span>.</p>
+                            <ul class="space-y-5">
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Modo Principal: Sentado.</strong> <span class="text-gray-700">Ajuste de altura automático y manual para accesibilidad total.</span></div>
                                 </li>
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">Movimiento por Defecto: Teletransporte.</strong> El movimiento continuo estará desactivado por defecto.</div>
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Movimiento por Defecto: Teletransporte.</strong> <span class="text-gray-700">El movimiento continuo estará desactivado por defecto.</span></div>
                                 </li>
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">Giro por Defecto: Snap Turn.</strong> Giros instantáneos en ángulos fijos (30°/45°) para evitar desorientación.</div>
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Giro por Defecto: Snap Turn.</strong> <span class="text-gray-700">Giros instantáneos en ángulos fijos (30°/45°) para evitar desorientación.</span></div>
                                 </li>
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">Prohibido:</strong> Nunca tomar el control de la cámara, ni permitir saltos o caídas.</div>
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Prohibido:</strong> <span class="text-gray-700">Nunca tomar el control de la cámara, ni permitir saltos o caídas.</span></div>
                                 </li>
                             </ul>
                         </div>
+
                         <!-- Pestaña 2: Inmersión -->
                         <div id="inmersion" class="tab-content hidden">
-                            <h3 class="text-2xl font-bold text-CybertronixBlue mb-4">La Sensación de "Estar Allí"</h3>
-                            <p class="text-lg text-gray-700 mb-6">El entorno debe ser amigable, universal y relajante para reducir la ansiedad y fomentar la participación.</p>
-                            <ul class="space-y-4">
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">UI Simple y Diegética:</strong> Iconos grandes, poco texto, alto contraste. El progreso se mostrará en el entorno (marcador de pared) o en un 'reloj inteligente' virtual.</div>
+                            <h3 class="text-3xl font-bold text-CybertronixBlue mb-6">La Sensación de "Estar Allí"</h3>
+                            <p class="text-lg text-gray-700 mb-8 leading-relaxed">El entorno debe ser amigable, universal y relajante para reducir la ansiedad y fomentar la participación.</p>
+                            <ul class="space-y-5">
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">UI Simple y Diegética:</strong> <span class="text-gray-700">Iconos grandes, poco texto, alto contraste. El progreso se mostrará en el entorno (marcador de pared) o en un 'reloj inteligente' virtual.</span></div>
                                 </li>
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">Entorno Relajante:</strong> Estilo visual limpio, brillante y colorido. Evitar diseños "clínicos" u "hospitalarios".</div>
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Entorno Relajante:</strong> <span class="text-gray-700">Estilo visual limpio, brillante y colorido. Evitar diseños "clínicos" u "hospitalarios".</span></div>
                                 </li>
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">Avatar:</strong> Manos flotantes y torso simple, con personalización de guantes/colores para atraer a los niños.</div>
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Avatar:</strong> <span class="text-gray-700">Manos flotantes y torso simple, con personalización de guantes/colores para atraer a los niños.</span></div>
                                 </li>
                             </ul>
                         </div>
+
                         <!-- Pestaña 3: Interacción -->
                         <div id="interaccion" class="tab-content hidden">
-                            <h3 class="text-2xl font-bold text-CybertronixBlue mb-4">Interacción Accesible</h3>
-                            <p class="text-lg text-gray-700 mb-6">Las interacciones deben ser claras, de bajo esfuerzo y diseñadas para manos con posible debilidad o fatiga.</p>
-                            <ul class="space-y-4">
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">Agarre por Defecto: Toggle.</strong> Presionar una vez para agarrar, presionar de nuevo para soltar. Esto evita la fatiga de mantener presionado el botón de agarre.</div>
+                            <h3 class="text-3xl font-bold text-CybertronixBlue mb-6">Interacción Accesible</h3>
+                            <p class="text-lg text-gray-700 mb-8 leading-relaxed">Las interacciones deben ser claras, de bajo esfuerzo y diseñadas para manos con posible debilidad o fatiga.</p>
+                            <ul class="space-y-5">
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Agarre por Defecto: Toggle.</strong> <span class="text-gray-700">Presionar una vez para agarrar, presionar de nuevo para soltar. Esto evita la fatiga de mantener presionado el botón de agarre.</span></div>
                                 </li>
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">Controles Simples:</strong> Interacciones basadas en Gatillo (seleccionar) y Agarre (sostener). Sticks usados solo para movimiento (teletransporte/giro).</div>
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Controles Simples:</strong> <span class="text-gray-700">Interacciones basadas en Gatillo (seleccionar) y Agarre (sostener). Sticks usados solo para movimiento (teletransporte/giro).</span></div>
                                 </li>
-                                <li class="flex items-start">
-                                    <span class="text-CybertronixGreen font-bold text-xl mr-3">►</span>
-                                    <div><strong class="text-neutral-800">Feedback Háptico:</strong> Vibraciones suaves para indicar éxito (completar repetición), límites (rango de movimiento seguro) y agarre de objetos.</div>
+                                <li class="flex items-start group">
+                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
+                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Feedback Háptico:</strong> <span class="text-gray-700">Vibraciones suaves para indicar éxito (completar repetición), límites (rango de movimiento seguro) y agarre de objetos.</span></div>
                                 </li>
                             </ul>
                         </div>
@@ -196,123 +437,146 @@
         </section>
 
         <!-- 3.0 Mecánicas y Flujo de Juego -->
-        <section id="mecanicas" class="py-20 bg-white">
-            <h2 class="text-3xl font-bold text-center mb-12">Flujo de Juego y Mecánicas Terapéuticas</h2>
-            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-16">
-                El juego sigue un modelo de "hub-and-spoke" (centro y radios). El paciente comienza en un tutorial, luego accede a una "Sala de Inicio" central desde donde puede elegir qué minijuego terapéutico jugar. Haz clic en una sala para ver sus detalles.
+        <section id="mecanicas" class="py-24 bg-gradient-to-b from-neutral-100 to-white">
+            <h2 class="text-4xl font-extrabold text-center mb-8 text-gray-900">Flujo de Juego y Mecánicas Terapéuticas</h2>
+            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-20 leading-relaxed px-6">
+                El juego sigue un modelo de "hub-and-spoke" (centro y radios). El paciente comienza en un tutorial, luego accede a una "Sala de Inicio" central desde donde puede elegir qué minijuego terapéutico jugar. <span class="font-semibold text-CybertronixBlue">Haz clic en una sala para ver sus detalles.</span>
             </p>
 
             <div class="max-w-7xl mx-auto px-6">
-                <!-- Diagrama de Flujo Interactivo -->
-                <div class="text-center">
-                    <div class="inline-block bg-CybertronixGreen text-white font-bold py-3 px-6 rounded-lg shadow-lg text-lg">Sala Tutorial (Fase 1)</div>
-                    <div class="text-5xl text-gray-300 my-2">↓</div>
-                    <div class="inline-block bg-CybertronixBlue text-white font-bold py-6 px-12 rounded-lg shadow-lg text-2xl">Sala Inicio (Hub Central - Fase 2)</div>
-                    <div class="text-5xl text-gray-300 my-2">↓</div>
-                    <p class="text-lg text-gray-600 mb-6">El paciente elige una actividad:</p>
+                <!-- Diagrama de Flujo -->
+                <div class="text-center mb-16">
+                    <div class="inline-block bg-gradient-to-r from-CybertronixGreen to-green-400 text-white font-bold py-4 px-8 rounded-xl shadow-lg text-lg hover:scale-105 transition-transform">Sala Tutorial (Fase 1)</div>
+                    <div class="text-5xl text-gray-400 my-4">↓</div>
+                    <div class="inline-block bg-gradient-to-r from-CybertronixBlue to-cyan-400 text-white font-bold py-6 px-14 rounded-xl shadow-xl text-2xl hover:scale-105 transition-transform">Sala Inicio (Hub Central - Fase 2)</div>
+                    <div class="text-5xl text-gray-400 my-4">↓</div>
+                    <p class="text-xl text-gray-700 mb-8 font-semibold">El paciente elige una actividad:</p>
                 </div>
                 
-                <!-- Rejilla de Salas (Botones) - AHORA CON MEDITACIÓN -->
-                <!-- La rejilla se ajusta a 4 columnas en desktop para los 8 elementos -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
-                    <button class="sala-btn" data-sala="gimnasia">🏋️ Gimnasia (Escalar)</button>
-                    <button class="sala-btn" data-sala="rumba">💃 Rumba Terapia</button>
-                    <button class="sala-btn" data-sala="bolos">🎳 Bolos</button>
-                    <button class="sala-btn" data-sala="espadas">⚔️ Sala de Espadas</button>
-                    <button class="sala-btn" data-sala="basket">🏀 Basket</button>
-                    <button class="sala-btn" data-sala="disparo">🎯 Campo de Disparo</button>
-                    <button class="sala-btn" data-sala="pesca">🎣 Mini Juegos (Pesca)</button>
-                    <!-- NUEVA SALA DE MEDITACIÓN -->
-                    <button class="sala-btn" data-sala="meditacion">🧘 Meditación (Relajación)</button> 
+                <!-- Rejilla de Salas -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 mb-12">
+                    <button class="sala-btn" data-sala="gimnasia" aria-label="Ver detalles de Gimnasia">🏋️ Gimnasia (Escalar)</button>
+                    <button class="sala-btn" data-sala="rumba" aria-label="Ver detalles de Rumba Terapia">💃 Rumba Terapia</button>
+                    <button class="sala-btn" data-sala="bolos" aria-label="Ver detalles de Bolos">🎳 Bolos</button>
+                    <button class="sala-btn" data-sala="espadas" aria-label="Ver detalles de Sala de Espadas">⚔️ Sala de Espadas</button>
+                    <button class="sala-btn" data-sala="basket" aria-label="Ver detalles de Basket">🏀 Basket</button>
+                    <button class="sala-btn" data-sala="disparo" aria-label="Ver detalles de Campo de Disparo">🎯 Campo de Disparo</button>
+                    <button class="sala-btn" data-sala="pesca" aria-label="Ver detalles de Mini Juegos">🎣 Mini Juegos (Pesca)</button>
+                    <button class="sala-btn" data-sala="meditacion" aria-label="Ver detalles de Meditación">🧘 Meditación (Relajación)</button>
                 </div>
                 
-                <!-- Panel de Detalles de la Sala -->
-                <div id="sala-detail-panel" class="bg-slate-50 p-8 rounded-lg shadow-inner border border-gray-200 min-h-[300px]">
-                    <h3 id="sala-titulo" class="text-3xl font-bold text-CybertronixBlue mb-4">Selecciona una Sala</h3>
-                    <p id="sala-instruccion" class="text-lg text-gray-500">Haz clic en una de las actividades de arriba para ver sus objetivos terapéuticos y mecánicas de juego.</p>
+                <!-- Panel de Detalles -->
+                <div id="sala-detail-panel" class="p-10 rounded-2xl shadow-lg border-2 border-gray-200 min-h-[350px] transition-all">
+                    <h3 id="sala-titulo" class="text-4xl font-extrabold text-CybertronixBlue mb-4">Selecciona una Sala</h3>
+                    <p id="sala-instruccion" class="text-xl text-gray-600">Haz clic en una de las actividades de arriba para ver sus objetivos terapéuticos y mecánicas de juego.</p>
                     
-                    <div id="sala-contenido" class="hidden grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div>
-                            <h4 class="text-xl font-semibold text-neutral-800 mb-2">Mecánica de Juego</h4>
-                            <p id="sala-mecanica" class="text-gray-700"></p>
+                    <div id="sala-contenido" class="hidden grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+                        <div class="sala-detail-card">
+                            <div class="sala-detail-icon">🎮</div>
+                            <h4 class="text-xl font-bold text-neutral-900 mb-3">Mecánica de Juego</h4>
+                            <p id="sala-mecanica" class="text-gray-700 leading-relaxed"></p>
                         </div>
-                        <div>
-                            <h4 class="text-xl font-semibold text-neutral-800 mb-2">Objetivo Terapéutico</h4>
-                            <p id="sala-terapia" class="text-gray-700"></p>
+                        <div class="sala-detail-card">
+                            <div class="sala-detail-icon">🏥</div>
+                            <h4 class="text-xl font-bold text-neutral-900 mb-3">Objetivo Terapéutico</h4>
+                            <p id="sala-terapia" class="text-gray-700 leading-relaxed"></p>
                         </div>
-                        <div>
-                            <h4 class="text-xl font-semibold text-neutral-800 mb-2">Escalabilidad (Dificultad)</h4>
-                            <p id="sala-escalabilidad" class="text-gray-700"></p>
+                        <div class="sala-detail-card">
+                            <div class="sala-detail-icon">📊</div>
+                            <h4 class="text-xl font-bold text-neutral-900 mb-3">Escalabilidad (Dificultad)</h4>
+                            <p id="sala-escalabilidad" class="text-gray-700 leading-relaxed"></p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 4.0 y 5.0 Entorno (Audio y Técnico) -->
-        <section id="entorno" class="py-20 bg-neutral-800 text-white">
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
-                <div>
-                    <h2 class="text-3xl font-bold mb-8 text-CybertronixGreen">Diseño de Audio 3D</h2>
-                    <p class="text-lg text-gray-300 mb-6">El audio es fundamental para la inmersión y el feedback. Usará audio espacial 3D para guiar al paciente.</p>
-                    <ul class="space-y-3 list-disc list-inside">
-                        <li>Instrucciones de voz claras, calmadas y motivadoras.</li>
-                        <li>Voces seleccionables (calmada, enérgica, animada).</li>
-                        <li>Feedback positivo (jingles, aplausos) al completar repeticiones.</li>
-                        <li>Biblioteca de música variada (infantil, pop, relajante, clásica) a elección del paciente.</li>
+        <!-- 4.0 y 5.0 Entorno -->
+        <section id="entorno" class="py-24 bg-gradient-to-br from-neutral-800 to-neutral-900 text-white">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div class="animate-fade-in-up">
+                    <div class="text-5xl mb-6">🎵</div>
+                    <h2 class="text-4xl font-extrabold mb-8 text-CybertronixGreen">Diseño de Audio 3D</h2>
+                    <p class="text-lg text-gray-300 mb-8 leading-relaxed">El audio es fundamental para la inmersión y el feedback. Usará audio espacial 3D para guiar al paciente.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-CybertronixGreen mr-3 text-xl">✓</span>
+                            <span class="text-gray-200">Instrucciones de voz claras, calmadas y motivadoras.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-CybertronixGreen mr-3 text-xl">✓</span>
+                            <span class="text-gray-200">Voces seleccionables (calmada, enérgica, animada).</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-CybertronixGreen mr-3 text-xl">✓</span>
+                            <span class="text-gray-200">Feedback positivo (jingles, aplausos) al completar repeticiones.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-CybertronixGreen mr-3 text-xl">✓</span>
+                            <span class="text-gray-200">Biblioteca de música variada (infantil, pop, relajante, clásica) a elección del paciente.</span>
+                        </li>
                     </ul>
                 </div>
-                <div>
-                    <h2 class="text-3xl font-bold mb-8 text-CybertronixGreen">Requisitos Técnicos Clave</h2>
-                    <p class="text-lg text-gray-300 mb-6">El rendimiento no es negociable. La meta es <span class="font-bold">cero 'frame drops'</span> para evitar el mareo.</p>
-                    <ul class="space-y-3 list-disc list-inside">
-                        <li><strong class="text-white">FPS Objetivo:</strong> 90 FPS (PCVR) / 72-90 FPS (Quest 2-3) estables.</li>
-                        <li><strong class="text-white">Gráficos:</strong> Estilo 'low poly' o estilizado, limpio y brillante.</li>
-                        <li><strong class="text-white">Iluminación:</strong> Priorizar 'baked lighting' (luz horneada) para máximo rendimiento en Standalone.</li>
-                        <li><strong class="text-white">Renderizado:</strong> Single Pass Instanced Rendering (SPIR) obligatorio.</li>
+                <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
+                    <div class="text-5xl mb-6">⚙️</div>
+                    <h2 class="text-4xl font-extrabold mb-8 text-CybertronixGreen">Requisitos Técnicos Clave</h2>
+                    <p class="text-lg text-gray-300 mb-8 leading-relaxed">El rendimiento no es negociable. La meta es <span class="font-bold text-CybertronixBlue">cero 'frame drops'</span> para evitar el mareo.</p>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="text-CybertronixBlue mr-3 text-xl">▸</span>
+                            <div><strong class="text-white">FPS Objetivo:</strong> <span class="text-gray-200">90 FPS (PCVR) / 72-90 FPS (Quest 2-3) estables.</span></div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-CybertronixBlue mr-3 text-xl">▸</span>
+                            <div><strong class="text-white">Gráficos:</strong> <span class="text-gray-200">Estilo 'low poly' o estilizado, limpio y brillante.</span></div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-CybertronixBlue mr-3 text-xl">▸</span>
+                            <div><strong class="text-white">Iluminación:</strong> <span class="text-gray-200">Priorizar 'baked lighting' (luz horneada) para máximo rendimiento en Standalone.</span></div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-CybertronixBlue mr-3 text-xl">▸</span>
+                            <div><strong class="text-white">Renderizado:</strong> <span class="text-gray-200">Single Pass Instanced Rendering (SPIR) obligatorio.</span></div>
+                        </li>
                     </ul>
                 </div>
             </div>
         </section>
 
         <!-- 6.0 Estrategia de Prototipado -->
-        <section id="estrategia" class="py-20 bg-white">
-            <h2 class="text-3xl font-bold text-center mb-16">Estrategia de Prototipado y Pruebas</h2>
+        <section id="estrategia" class="py-24 bg-white">
+            <h2 class="text-4xl font-extrabold text-center mb-20 text-gray-900">Estrategia de Prototipado y Pruebas</h2>
             <div class="max-w-7xl mx-auto px-6">
-                <div class="flex flex-col md:flex-row justify-between items-center space-y-8 md:space-y-0 md:space-x-4">
+                <div class="flex flex-col md:flex-row justify-between items-start space-y-12 md:space-y-0 md:space-x-6">
                     
-                    <!-- Paso 1 -->
-                    <div class="flex-1 text-center">
-                        <div class="w-20 h-20 bg-CybertronixBlue text-white text-3xl font-bold rounded-full flex items-center justify-center mx-auto shadow-lg">1</div>
-                        <h3 class="text-xl font-semibold mt-4 mb-2">Fase 1: Prototipo de Confort</h3>
-                        <p class="text-gray-600 px-2">Probar solo locomoción (teletransporte) y calibración en un entorno de "cajas grises". Métrica: Cero mareos.</p>
+                    <div class="flex-1 text-center group">
+                        <div class="phase-number w-24 h-24 bg-gradient-to-br from-CybertronixBlue to-cyan-500 text-white text-4xl font-extrabold rounded-2xl flex items-center justify-center mx-auto shadow-xl mb-6">1</div>
+                        <h3 class="text-2xl font-bold mt-4 mb-4 text-gray-900">Fase 1: Prototipo de Confort</h3>
+                        <p class="text-gray-600 px-4 leading-relaxed">Probar solo locomoción (teletransporte) y calibración en un entorno de "cajas grises". <span class="font-semibold text-CybertronixBlue">Métrica: Cero mareos.</span></p>
                     </div>
 
-                    <div class="text-4xl text-gray-300 hidden md:block">→</div>
+                    <div class="text-5xl text-gray-300 hidden md:block self-center">→</div>
 
-                    <!-- Paso 2 -->
-                    <div class="flex-1 text-center">
-                        <div class="w-20 h-20 bg-CybertronixBlue text-white text-3xl font-bold rounded-full flex items-center justify-center mx-auto shadow-lg">2</div>
-                        <h3 class="text-xl font-semibold mt-4 mb-2">Fase 2: Prototipo de Interacción</h3>
-                        <p class="text-gray-600 px-2">Probar agarre 'Toggle' y usabilidad de la UI (iconos grandes). Métrica: Intuitivo, cero fatiga de manos.</p>
+                    <div class="flex-1 text-center group">
+                        <div class="phase-number w-24 h-24 bg-gradient-to-br from-CybertronixBlue to-cyan-500 text-white text-4xl font-extrabold rounded-2xl flex items-center justify-center mx-auto shadow-xl mb-6">2</div>
+                        <h3 class="text-2xl font-bold mt-4 mb-4 text-gray-900">Fase 2: Prototipo de Interacción</h3>
+                        <p class="text-gray-600 px-4 leading-relaxed">Probar agarre 'Toggle' y usabilidad de la UI (iconos grandes). <span class="font-semibold text-CybertronixBlue">Métrica: Intuitivo, cero fatiga de manos.</span></p>
                     </div>
 
-                    <div class="text-4xl text-gray-300 hidden md:block">→</div>
+                    <div class="text-5xl text-gray-300 hidden md:block self-center">→</div>
 
-                    <!-- Paso 3 -->
-                    <div class="flex-1 text-center">
-                        <div class="w-20 h-20 bg-CybertronixBlue text-white text-3xl font-bold rounded-full flex items-center justify-center mx-auto shadow-lg">3</div>
-                        <h3 class="text-xl font-semibold mt-4 mb-2">Fase 3: Bucle de Juego (Vertical Slice)</h3>
-                        <p class="text-gray-600 px-2">Probar una sala de terapia completa (ej. Bolos) con audio y feedback de progreso.</p>
+                    <div class="flex-1 text-center group">
+                        <div class="phase-number w-24 h-24 bg-gradient-to-br from-CybertronixBlue to-cyan-500 text-white text-4xl font-extrabold rounded-2xl flex items-center justify-center mx-auto shadow-xl mb-6">3</div>
+                        <h3 class="text-2xl font-bold mt-4 mb-4 text-gray-900">Fase 3: Bucle de Juego</h3>
+                        <p class="text-gray-600 px-4 leading-relaxed">Probar una sala de terapia completa (ej. Bolos) con audio y feedback de progreso.</p>
                     </div>
 
-                    <div class="text-4xl text-gray-300 hidden md:block">→</div>
+                    <div class="text-5xl text-gray-300 hidden md:block self-center">→</div>
 
-                    <!-- Paso 4 -->
-                    <div class="flex-1 text-center">
-                        <div class="w-20 h-20 bg-CybertronixGreen text-white text-3xl font-bold rounded-full flex items-center justify-center mx-auto shadow-lg">✓</div>
-                        <h3 class="text-xl font-semibold mt-4 mb-2">Validación Clínica</h3>
-                        <p class="text-gray-600 px-2">Pruebas supervisadas por fisioterapeutas reales para validar los objetivos terapéuticos y la seguridad.</p>
+                    <div class="flex-1 text-center group">
+                        <div class="phase-number w-24 h-24 bg-gradient-to-br from-CybertronixGreen to-green-400 text-white text-5xl font-extrabold rounded-2xl flex items-center justify-center mx-auto shadow-xl mb-6">✓</div>
+                        <h3 class="text-2xl font-bold mt-4 mb-4 text-gray-900">Validación Clínica</h3>
+                        <p class="text-gray-600 px-4 leading-relaxed">Pruebas supervisadas por fisioterapeutas reales para validar los objetivos terapéuticos y la seguridad.</p>
                     </div>
                 </div>
             </div>
@@ -321,14 +585,14 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-neutral-800 text-gray-300 p-8 text-center">
-        <p>&copy; 2025 Cybertronix - Documento de Diseño de Juego Interactivo "VR Therapy Center".</p>
+    <footer class="bg-neutral-900 text-gray-400 py-10 text-center">
+        <p class="text-lg">&copy; 2025 <span class="text-CybertronixBlue font-semibold">Cybertronix</span> - Documento de Diseño de Juego Interactivo "VR Therapy Center".</p>
     </footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
 
-            // Datos de las Salas (del GDD) - AHORA CON MEDITACIÓN
+            // Datos de las Salas
             const salaData = {
                 gimnasia: {
                     titulo: "🏋️ Gimnasia (Escalar)",
@@ -372,7 +636,6 @@
                     terapia: "Movimientos finos de muñeca (girar carrete), movimiento de hombro (lanzar).",
                     escalabilidad: "Resistencia simulada del \"pez\", velocidad requerida para girar el carrete."
                 },
-                // NUEVO ELEMENTO: MEDITACIÓN
                 meditacion: { 
                     titulo: "🧘 Meditación (Relajación)",
                     mecanica: "Sesión guiada sin interacción física (excepto por comandos de voz o gestos de mano simples para cambiar el ambiente). El paciente elige un entorno visual calmado (bosque, playa).",
@@ -381,7 +644,7 @@
                 }
             };
 
-            // Lógica de Pestañas (Tabs)
+            // Tabs
             const tabButtons = document.querySelectorAll('.tab-btn');
             const tabContents = document.querySelectorAll('.tab-content');
 
@@ -395,6 +658,7 @@
                     tabContents.forEach(content => {
                         if (content.id === tabId) {
                             content.classList.remove('hidden');
+                            content.style.animation = 'fadeInUp 0.5s ease-out';
                         } else {
                             content.classList.add('hidden');
                         }
@@ -402,7 +666,7 @@
                 });
             });
 
-            // Lógica del Diagrama Interactivo de Salas
+            // Salas
             const salaButtons = document.querySelectorAll('.sala-btn');
             const salaTitulo = document.getElementById('sala-titulo');
             const salaInstruccion = document.getElementById('sala-instruccion');
@@ -433,17 +697,22 @@
                         salaInstruccion.classList.add('hidden');
                         salaContenido.classList.remove('hidden');
                         salaContenido.classList.add('grid');
+                        salaContenido.style.animation = 'fadeInUp 0.5s ease-out';
                     }
                 });
             });
 
-            // Lógica de Scroll Suave (Smooth Scroll) para anclas
+            // Smooth Scroll
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                     
                     const mobileMenu = document.getElementById('mobile-menu');
                     if (!mobileMenu.classList.contains('hidden')) {
@@ -452,70 +721,36 @@
                 });
             });
 
-            // Lógica de Menú Móvil
+            // Mobile Menu
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             mobileMenuBtn.addEventListener('click', () => {
                 mobileMenu.classList.toggle('hidden');
             });
-            
-            // Estilos CSS para los botones de las pestañas y salas
-            const style = document.createElement('style');
-            style.innerHTML = `
-                .tab-btn {
-                    flex-grow: 1;
-                    padding: 1rem 0.5rem;
-                    text-align: center;
-                    font-size: 0.875rem;
-                    font-weight: 600;
-                    color: #4b5563;
-                    cursor: pointer;
-                    transition: all 0.2s ease-in-out;
-                    border-bottom: 3px solid transparent;
-                }
-                .tab-btn:hover {
-                    background-color: #f9fafb;
-                }
-                .tab-btn.active-tab {
-                    color: ${tailwind.config.theme.extend.colors.CybertronixBlue};
-                    border-bottom-color: ${tailwind.config.theme.extend.colors.CybertronixBlue};
-                }
-                @media (min-width: 768px) {
-                    .tab-btn {
-                        font-size: 1.125rem;
-                        padding: 1.25rem 1rem;
-                    }
-                }
-                
-                .sala-btn {
-                    padding: 1rem 0.5rem;
-                    font-size: 0.875rem;
-                    font-weight: 600;
-                    color: ${tailwind.config.theme.extend.colors.CybertronixBlue};
-                    background-color: #ffffff;
-                    border: 2px solid ${tailwind.config.theme.extend.colors.CybertronixBlue};
-                    border-radius: 0.5rem;
-                    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                    cursor: pointer;
-                    transition: all 0.2s ease-in-out;
-                    text-align: center;
-                }
-                .sala-btn:hover {
-                    background-color: #f0faff;
-                    transform: translateY(-2px);
-                    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-                }
-                .sala-btn.active-sala {
-                    background-color: ${tailwind.config.theme.extend.colors.CybertronixBlue};
-                    color: white;
-                    border-color: ${tailwind.config.theme.extend.colors.CybertronixBlue};
-                    transform: translateY(-2px);
-                    box-shadow: 0 10px 15px -3px rgba(16, 186, 212, 0.3), 0 4px 6px -2px rgba(16, 186, 212, 0.1);
-                }
-            `;
-            document.head.appendChild(style);
 
-            // Activar la primera pestaña por defecto
+            // Intersection Observer para animaciones al scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.animate-fade-in-up').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+                observer.observe(el);
+            });
+
+            // Activar primera pestaña
             document.querySelector('.tab-btn[data-tab="comodidad"]').click();
 
         });
