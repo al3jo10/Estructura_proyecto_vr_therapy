@@ -1,759 +1,406 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GDD Interactivo - VR Therapy Center</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        /* Smooth Scroll con offset para header sticky */
-        html {
-            scroll-padding-top: 80px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rutina Full Semana - Masa Muscular</title>
+  <style>
+    :root {
+      --bg1: #f7f2e8;
+      --bg2: #eadcc7;
+      --panel: #fff8ee;
+      --card: #ffffff;
+      --ink: #211d17;
+      --muted: #5f584d;
+      --brand: #b23a1b;
+      --brand-soft: #f3e1d2;
+      --line: #e3d6c1;
+      --ok: #256e2d;
+      --shadow: 0 10px 28px rgba(49, 37, 18, 0.12);
+      --radius: 18px;
+    }
 
-        /* Mejoras de Performance */
-        * {
-            -webkit-tap-highlight-color: transparent;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        /* Focus visible para accesibilidad */
-        *:focus-visible {
-            outline: 3px solid #10BAD4;
-            outline-offset: 2px;
-            border-radius: 4px;
-        }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 8% 8%, rgba(178, 58, 27, 0.18), transparent 42%),
+        radial-gradient(circle at 90% 10%, rgba(230, 165, 106, 0.25), transparent 38%),
+        linear-gradient(130deg, var(--bg1), var(--bg2));
+      min-height: 100vh;
+      line-height: 1.45;
+    }
 
-        /* Animaciones optimizadas */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .wrap {
+      width: min(1180px, 94vw);
+      margin: 24px auto 54px;
+    }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+    .hero {
+      background: linear-gradient(130deg, #fff9f1, #ffeed7);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
 
-        @keyframes pulse-glow {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(16, 186, 212, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 0 8px rgba(16, 186, 212, 0);
-            }
-        }
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2.3vw, 2.2rem);
+    }
 
-        .animate-fade-in-up {
-            animation: fadeInUp 0.6s ease-out;
-        }
+    .hero p {
+      margin: 8px 0 0;
+      color: var(--muted);
+    }
 
-        .animate-slide-down {
-            animation: slideDown 0.3s ease-out;
-        }
+    .mini-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+    }
 
-        /* Tabs mejorados */
-        .tab-btn {
-            flex-grow: 1;
-            padding: 1rem 0.75rem;
-            text-align: center;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #6b7280;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-bottom: 3px solid transparent;
-            position: relative;
-        }
+    .pill {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      text-align: center;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+    }
 
-        .tab-btn::before {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #10BAD4, #C3D52A);
-            transform: scaleX(0);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    .day {
+      margin-top: 20px;
+      background: rgba(255, 248, 238, 0.9);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      animation: rise 0.45s ease;
+    }
 
-        .tab-btn:hover {
-            background-color: #f9fafb;
-            color: #374151;
-        }
+    .day-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
 
-        .tab-btn.active-tab {
-            color: #10BAD4;
-        }
+    .day-head h2 {
+      margin: 0;
+      font-size: clamp(1.1rem, 1.8vw, 1.35rem);
+    }
 
-        .tab-btn.active-tab::before {
-            transform: scaleX(1);
-        }
+    .focus {
+      color: var(--brand);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
 
-        @media (min-width: 768px) {
-            .tab-btn {
-                font-size: 1rem;
-                padding: 1.25rem 1rem;
-            }
-        }
+    .exercise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 12px;
+    }
 
-        /* Botones de sala mejorados */
-        .sala-btn {
-            padding: 1.25rem 1rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #10BAD4;
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            border: 2px solid #10BAD4;
-            border-radius: 0.75rem;
-            box-shadow: 0 2px 8px rgba(16, 186, 212, 0.1);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+    .card {
+      background: var(--card);
+      border: 1px solid #e7dcc9;
+      border-radius: 14px;
+      padding: 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        .sala-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s;
-        }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(67, 53, 24, 0.16);
+    }
 
-        .sala-btn:hover {
-            background: linear-gradient(135deg, #f0faff 0%, #e0f7fb 100%);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 20px rgba(16, 186, 212, 0.25);
-            border-color: #0ea5c0;
-        }
+    .title {
+      margin: 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 1rem;
+    }
 
-        .sala-btn:hover::before {
-            left: 100%;
-        }
+    .series {
+      color: #922f16;
+      font-weight: 700;
+      font-size: 0.84rem;
+      white-space: nowrap;
+    }
 
-        .sala-btn.active-sala {
-            background: linear-gradient(135deg, #10BAD4 0%, #0ea5c0 100%);
-            color: white;
-            border-color: #0ea5c0;
-            transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(16, 186, 212, 0.4);
-            animation: pulse-glow 2s infinite;
-        }
+    .hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+      min-height: 2.7em;
+    }
 
-        /* Cards mejoradas */
-        .metric-card {
-            background: white;
-            border-radius: 1rem;
-            padding: 2rem;
-            border-bottom: 4px solid #10BAD4;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
+    .media {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      border-radius: 10px;
+      background: #d8d2c6;
+      border: 1px solid #ded2bf;
+    }
 
-        .metric-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #10BAD4, #C3D52A);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    .cta-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
-        .metric-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 28px rgba(16, 186, 212, 0.2);
-        }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 700;
+      border-radius: 10px;
+      padding: 7px 10px;
+      border: 1px solid transparent;
+    }
 
-        .metric-card:hover::before {
-            transform: scaleX(1);
-        }
+    .btn-video {
+      color: #fff;
+      background: var(--brand);
+    }
 
-        /* Mejora visual del panel de detalles */
-        #sala-detail-panel {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 2px solid #e2e8f0;
-            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
+    .btn-video:hover {
+      background: #952f14;
+    }
 
-        /* Scroll suave mejorado */
-        @media (prefers-reduced-motion: no-preference) {
-            html {
-                scroll-behavior: smooth;
-            }
-        }
+    .btn-alt {
+      color: #6b2a18;
+      background: var(--brand-soft);
+      border-color: #efccb5;
+    }
 
-        /* Números de fase con animación */
-        .phase-number {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    .tips {
+      margin-top: 20px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
 
-        .phase-number:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
+    .tips h3 {
+      margin: 0 0 10px;
+      color: var(--ok);
+    }
 
-        /* Footer links hover */
-        footer a {
-            transition: color 0.3s ease;
-        }
+    ul {
+      margin: 0;
+      padding-left: 18px;
+    }
 
-        footer a:hover {
-            color: #10BAD4;
-        }
+    li {
+      margin-bottom: 7px;
+    }
 
-        /* Mobile menu mejorado */
-        #mobile-menu {
-            animation: slideDown 0.3s ease-out;
-        }
+    .note {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: #6a604d;
+    }
 
-        #mobile-menu a {
-            transition: all 0.2s ease;
-        }
+    @keyframes rise {
+      from {
+        opacity: 0;
+        transform: translateY(7px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        #mobile-menu a:hover {
-            background-color: #f0faff;
-            padding-left: 1.5rem;
-        }
-
-        /* Detalle de sala cards */
-        .sala-detail-card {
-            background: white;
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            border: 1px solid #e5e7eb;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .sala-detail-card:hover {
-            box-shadow: 0 8px 16px rgba(16, 186, 212, 0.15);
-            transform: translateY(-2px);
-        }
-
-        .sala-detail-icon {
-            font-size: 2.5rem;
-            margin-bottom: 0.75rem;
-            display: block;
-        }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        CybertronixBlue: '#10BAD4',
-                        CybertronixGreen: '#C3D52A',
-                        neutral: {
-                            100: '#f5f5f5',
-                            800: '#262626',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    @media (max-width: 700px) {
+      .media {
+        aspect-ratio: 4 / 3;
+      }
+    }
+  </style>
 </head>
-<body class="bg-neutral-100 text-neutral-800 font-sans antialiased">
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>Rutina de Lunes a Viernes (Solo mancuernas y maquinas)</h1>
+      <p>
+        Ajustada a lo que pediste: entreno solo de lunes a viernes, sin barras, 1 solo dia de pierna y foco principal en pecho, espalda, hombro, biceps, triceps y abdomen.
+      </p>
+      <div class="mini-grid">
+        <div class="pill">Sesion: 70-95 min</div>
+        <div class="pill">RIR: deja 1-2 repeticiones en reserva</div>
+        <div class="pill">Compuestos: 90-120 s de descanso</div>
+        <div class="pill">Aislados: 45-75 s de descanso</div>
+      </div>
+    </section>
 
-    <!-- Header con mejor sombra -->
-    <header class="sticky top-0 z-50 bg-white shadow-lg backdrop-blur-sm bg-opacity-95">
-        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20">
-            <div class="flex-shrink-0 transition-transform hover:scale-105">
-                <img class="h-16 w-auto" src="image_43fcab.png" alt="Logo VR Therapy Center" onerror="this.src='https://placehold.co/150x64/10BAD4/white?text=VR+Therapy+Center'">
-            </div>
-            <div class="hidden md:flex space-x-8">
-                <a href="#vision" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Visión">Visión</a>
-                <a href="#pilares" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Pilares de Diseño">Pilares de Diseño</a>
-                <a href="#mecanicas" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Mecánicas">Mecánicas</a>
-                <a href="#entorno" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Entorno">Entorno</a>
-                <a href="#estrategia" class="text-gray-700 hover:text-CybertronixBlue transition-all font-medium hover:scale-105" aria-label="Ir a sección Estrategia">Estrategia</a>
-            </div>
-            <div class="md:hidden">
-                <button id="mobile-menu-btn" class="text-gray-700 hover:text-CybertronixBlue transition-colors p-2" aria-label="Abrir menú de navegación">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-                </button>
-            </div>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white shadow-lg border-t border-gray-100">
-            <a href="#vision" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Visión</a>
-            <a href="#pilares" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Pilares de Diseño</a>
-            <a href="#mecanicas" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Mecánicas</a>
-            <a href="#entorno" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Entorno</a>
-            <a href="#estrategia" class="block px-6 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-all">Estrategia</a>
+    <div id="days"></div>
+
+    <section class="tips">
+      <h3>Claves para que ganes masa de verdad</h3>
+      <ul>
+        <li>No llegues al fallo en todas las series. Hazlo solo en la ultima serie de aislados.</li>
+        <li>Si completas el rango alto de repeticiones en todas las series, sube peso la proxima sesion.</li>
+        <li>Creatina monohidrato: 3-5 g diarios, todos los dias.</li>
+        <li>Proteina total diaria: entre 1.6 y 2.2 g por kg de peso corporal.</li>
+        <li>Para crecer: superavit de 250-350 kcal sobre mantenimiento y sueño de 7.5 a 9 horas.</li>
+      </ul>
+      <p class="note">
+        Importante: quité el reproductor embebido porque YouTube bloquea muchos videos dentro de iframes. Aqui tienes GIF de referencia que si cargan y boton para abrir tutorial en una pestaña nueva.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    const fallbackSvg =
+      "data:image/svg+xml;charset=UTF-8," +
+      encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500"><rect width="100%" height="100%" fill="#ddd4c4"/><text x="50%" y="48%" text-anchor="middle" font-size="30" fill="#5b5245" font-family="Arial, sans-serif">Referencia visual no disponible</text><text x="50%" y="58%" text-anchor="middle" font-size="22" fill="#6f6555" font-family="Arial, sans-serif">Usa el boton Ver tutorial</text></svg>'
+      );
+
+    const gif = {
+      inclinePress: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Incline-Dumbbell-Press.gif",
+      chestPressMachine: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Chest-Press-Machine.gif",
+      pecDeck: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif",
+      cableCrossover: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Crossover.gif",
+      seatedRow: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Cable-Row.gif",
+      latPulldown: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Lat-Pulldown.gif",
+      lateralRaise: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lateral-Raise.gif",
+      cableLateralRaise: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Lateral-Raise.gif",
+      benchPress: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif",
+      bentRow: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bent-Over-Row.gif",
+      facePull: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Face-Pull.gif",
+      barbellCurl: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Curl.gif",
+      hammerCurl: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hammer-Curl.gif",
+      pushup: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Push-Up.gif",
+      pushdown: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pushdown.gif",
+      closeGrip: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Close-Grip-Bench-Press.gif",
+      shoulderPress: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif",
+      rdlBarbell: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Romanian-Deadlift.gif",
+      rdlDb: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Romanian-Deadlift.gif",
+      deadlift: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Deadlift.gif",
+      hipThrust: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Hip-Thrust.gif",
+      legCurl: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Curl.gif",
+      lunge: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lunge.gif",
+      squatBody: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bodyweight-Squat.gif",
+      jumpSquat: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Jump-Squat.gif",
+      legRaise: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Lying-Leg-Raise.gif",
+      russianTwist: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Russian-Twist.gif",
+      benchDips: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bench-Dips.gif"
+    };
+
+    const yt = (q) => `https://www.youtube.com/results?search_query=${encodeURIComponent(q + ' tecnica')}`;
+
+    const plan = [
+      {
+        day: "Lunes - Pecho + Triceps + Abdomen",
+        focus: "Prioridad pecho",
+        ex: [
+          { name: "Press inclinado con mancuernas", sets: "4x6-8", cue: "Pecho arriba, baja 2 segundos.", img: gif.inclinePress, link: yt("press inclinado mancuernas") },
+          { name: "Press de pecho en maquina", sets: "3x8-10", cue: "Escapulas atras y recorrido completo.", img: gif.chestPressMachine, link: yt("chest press machine") },
+          { name: "Pec deck fly", sets: "3x12-15", cue: "Aprieta el pecho al cerrar.", img: gif.pecDeck, link: yt("pec deck fly") },
+          { name: "Pushdown en polea", sets: "3x10-12", cue: "Codos pegados al cuerpo.", img: gif.pushdown, link: yt("triceps pushdown") },
+          { name: "Fondos en banco", sets: "2x12-15", cue: "Recorrido controlado.", img: gif.benchDips, link: yt("bench dips") },
+          { name: "Elevacion de piernas", sets: "3x12-15", cue: "No uses impulso de cadera.", img: gif.legRaise, link: yt("elevaciones de piernas abdomen") }
+        ]
+      },
+      {
+        day: "Martes - Espalda + Biceps + Abdomen",
+        focus: "Prioridad espalda",
+        ex: [
+          { name: "Jalon al pecho", sets: "4x8-10", cue: "Pecho alto, evita balanceo.", img: gif.latPulldown, link: yt("jalon al pecho") },
+          { name: "Remo sentado en cable", sets: "3x8-10", cue: "Tira con codos, no con brazos.", img: gif.seatedRow, link: yt("remo sentado cable") },
+          { name: "Face pull en polea", sets: "3x12-15", cue: "Lleva la cuerda a la cara con control.", img: gif.facePull, link: yt("face pull") },
+          { name: "Curl martillo con mancuernas", sets: "3x10-12", cue: "Muneca neutral, controla bajada.", img: gif.hammerCurl, link: yt("curl martillo") },
+          { name: "Curl alterno con mancuernas", sets: "2x10-12", cue: "Sin balanceo de torso.", img: gif.hammerCurl, link: yt("curl alterno mancuernas") },
+          { name: "Russian twist", sets: "3x20", cue: "Gira con control, no rapido.", img: gif.russianTwist, link: yt("russian twist") }
+        ]
+      },
+      {
+        day: "Miercoles - Hombro + Brazos",
+        focus: "Hombro 3D y detalle de brazo",
+        ex: [
+          { name: "Press de hombro con mancuernas", sets: "4x8-10", cue: "No arquees la espalda.", img: gif.shoulderPress, link: yt("press hombro mancuernas") },
+          { name: "Elevaciones laterales en polea", sets: "4x12-15", cue: "Sube hasta hombro, sin impulso.", img: gif.cableLateralRaise, link: yt("elevaciones laterales en polea") },
+          { name: "Face pull", sets: "3x12-15", cue: "Lleva cuerda hacia la cara.", img: gif.facePull, link: yt("face pull") },
+          { name: "Curl martillo", sets: "3x10-12", cue: "Codos quietos.", img: gif.hammerCurl, link: yt("curl martillo") },
+          { name: "Pushdown en polea", sets: "3x10-12", cue: "Separa cuerda al final.", img: gif.pushdown, link: yt("triceps pushdown") }
+        ]
+      },
+      {
+        day: "Jueves - Pecho + Espalda",
+        focus: "Segundo estimulo fuerte de torso",
+        ex: [
+          { name: "Press inclinado con mancuernas", sets: "3x8-10", cue: "Mismo peso que lunes o +1 rep.", img: gif.inclinePress, link: yt("press inclinado mancuernas") },
+          { name: "Press de pecho en maquina", sets: "3x8-10", cue: "Controla la bajada.", img: gif.chestPressMachine, link: yt("chest press machine") },
+          { name: "Cruce en polea", sets: "3x12-15", cue: "Aprieta fuerte al centro.", img: gif.cableCrossover, link: yt("cruce en polea") },
+          { name: "Jalon al pecho", sets: "3x10-12", cue: "Enfoca en dorsales.", img: gif.latPulldown, link: yt("jalon al pecho") },
+          { name: "Remo sentado en cable", sets: "3x10-12", cue: "Pausa corta atras.", img: gif.seatedRow, link: yt("remo sentado cable") }
+        ]
+      },
+      {
+        day: "Viernes - Pierna (Unico dia) + Abdomen",
+        focus: "Solo 1 dia de pierna como pediste",
+        ex: [
+          { name: "Sentadilla goblet con mancuerna", sets: "4x10-12", cue: "Pecho arriba y baja con control.", img: gif.squatBody, link: yt("sentadilla goblet") },
+          { name: "Lunge con mancuernas", sets: "3x10 por pierna", cue: "Paso estable y torso recto.", img: gif.lunge, link: yt("zancadas mancuernas") },
+          { name: "Peso muerto rumano con mancuernas", sets: "3x8-10", cue: "Cadera atras, espalda neutra.", img: gif.rdlDb, link: yt("peso muerto rumano mancuernas") },
+          { name: "Curl femoral", sets: "3x12-15", cue: "Sube con control y baja lento.", img: gif.legCurl, link: yt("curl femoral maquina") },
+          { name: "Sentadilla con salto", sets: "3x12", cue: "Explosivo al subir y estable al caer.", img: gif.jumpSquat, link: yt("sentadilla con salto") },
+          { name: "Russian twist + Elevacion de piernas", sets: "3 rondas", cue: "15+15 por lado y 12 reps.", img: gif.russianTwist, link: yt("rutina abdomen gimnasio") }
+        ]
+      }
+    ];
+
+    const container = document.getElementById("days");
+
+    for (const day of plan) {
+      const section = document.createElement("section");
+      section.className = "day";
+
+      const cards = day.ex
+        .map(
+          (e) => `
+            <article class="card">
+              <h3 class="title">${e.name}<span class="series">${e.sets}</span></h3>
+              <p class="hint">${e.cue}</p>
+              <img class="media" src="${e.img}" alt="Referencia visual de ${e.name}" loading="lazy" onerror="this.onerror=null;this.src='${fallbackSvg}'" />
+              <div class="cta-row">
+                <a class="btn btn-video" href="${e.link}" target="_blank" rel="noopener noreferrer">Ver tutorial</a>
+                <a class="btn btn-alt" href="${e.img}" target="_blank" rel="noopener noreferrer">Abrir GIF</a>
+              </div>
+            </article>
+          `
+        )
+        .join("");
+
+      section.innerHTML = `
+        <div class="day-head">
+          <h2>${day.day}</h2>
+          <span class="focus">${day.focus}</span>
         </div>
-    </header>
+        <div class="exercise-grid">${cards}</div>
+      `;
 
-    <main>
-        <!-- 1.0 Visión General -->
-        <section id="vision" class="pt-20 pb-24 bg-gradient-to-b from-white to-neutral-100">
-            <div class="max-w-5xl mx-auto px-6 text-center animate-fade-in-up">
-                <h1 class="text-5xl md:text-6xl font-extrabold text-CybertronixBlue mb-6 leading-tight">VR Therapy Center</h1>
-                <p class="text-xl md:text-2xl text-neutral-800 mb-8 leading-relaxed">
-                    Una plataforma de Realidad Virtual diseñada para la rehabilitación y terapia física, apta para 
-                    <span class="font-bold text-CybertronixGreen">todas las edades</span>.
-                </p>
-                <p class="text-lg md:text-xl text-gray-700 italic border-l-4 border-CybertronixGreen pl-6 py-4 bg-white rounded-r-lg shadow-sm max-w-3xl mx-auto">
-                    "Tu centro de rehabilitación virtual personal. Realiza ejercicios terapéuticos divertidos diseñados por profesionales para mejorar tu movilidad, seguir tu progreso y potenciar tu bienestar físico."
-                </p>
-            </div>
-
-            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 px-6 mt-20">
-                <div class="metric-card animate-fade-in-up" style="animation-delay: 0.1s;">
-                    <div class="text-4xl mb-3">🎮</div>
-                    <h3 class="text-lg font-bold text-CybertronixBlue mb-3">Plataforma Principal</h3>
-                    <p class="text-3xl font-extrabold text-gray-900 mb-2">Meta Quest 2-3</p>
-                    <p class="text-gray-600 leading-relaxed">Prioridad alta por ser inalámbrico, accesible y portátil.</p>
-                </div>
-                
-                <div class="metric-card animate-fade-in-up" style="animation-delay: 0.2s;">
-                    <div class="text-4xl mb-3">👥</div>
-                    <h3 class="text-lg font-bold text-CybertronixBlue mb-3">Público Objetivo</h3>
-                    <p class="text-3xl font-extrabold text-gray-900 mb-2">Todas las Edades</p>
-                    <p class="text-gray-600 leading-relaxed">Desde niños hasta personas mayores. Nivel: <span class="font-bold">Novato</span>.</p>
-                </div>
-                
-                <div class="metric-card animate-fade-in-up" style="animation-delay: 0.3s;">
-                    <div class="text-4xl mb-3">🎯</div>
-                    <h3 class="text-lg font-bold text-CybertronixBlue mb-3">Género</h3>
-                    <p class="text-3xl font-extrabold text-gray-900 mb-2">Serious Game</p>
-                    <p class="text-gray-600 leading-relaxed">Exergame de Terapia y Rehabilitación VR.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2.0 Pilares del Diseño VR -->
-        <section id="pilares" class="py-24 bg-white">
-            <div class="max-w-7xl mx-auto px-6">
-                <h2 class="text-4xl font-extrabold text-center mb-16 text-gray-900">Pilares del Diseño VR y UX</h2>
-                
-                <div class="max-w-5xl mx-auto">
-                    <div class="flex border-b-2 border-gray-200">
-                        <button class="tab-btn active-tab" data-tab="comodidad" aria-label="Ver información sobre Comodidad y Salud">
-                            <span class="text-2xl block mb-1">🥇</span> Comodidad y Salud
-                        </button>
-                        <button class="tab-btn" data-tab="inmersion" aria-label="Ver información sobre Inmersión y Presencia">
-                            <span class="text-2xl block mb-1">🌌</span> Inmersión y Presencia
-                        </button>
-                        <button class="tab-btn" data-tab="interaccion" aria-label="Ver información sobre Interacción y Háptica">
-                            <span class="text-2xl block mb-1">✋</span> Interacción y Háptica
-                        </button>
-                    </div>
-
-                    <div class="bg-white shadow-xl rounded-b-2xl p-8 md:p-12 border border-gray-100">
-                        <!-- Pestaña 1: Comodidad -->
-                        <div id="comodidad" class="tab-content">
-                            <h3 class="text-3xl font-bold text-CybertronixBlue mb-6">Prioridad #1: Comodidad del Paciente</h3>
-                            <p class="text-lg text-gray-700 mb-8 leading-relaxed">Las opciones de confort son el núcleo del diseño, no un extra. El objetivo es <span class="font-bold text-CybertronixBlue">cero mareo</span>.</p>
-                            <ul class="space-y-5">
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Modo Principal: Sentado.</strong> <span class="text-gray-700">Ajuste de altura automático y manual para accesibilidad total.</span></div>
-                                </li>
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Movimiento por Defecto: Teletransporte.</strong> <span class="text-gray-700">El movimiento continuo estará desactivado por defecto.</span></div>
-                                </li>
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Giro por Defecto: Snap Turn.</strong> <span class="text-gray-700">Giros instantáneos en ángulos fijos (30°/45°) para evitar desorientación.</span></div>
-                                </li>
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Prohibido:</strong> <span class="text-gray-700">Nunca tomar el control de la cámara, ni permitir saltos o caídas.</span></div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Pestaña 2: Inmersión -->
-                        <div id="inmersion" class="tab-content hidden">
-                            <h3 class="text-3xl font-bold text-CybertronixBlue mb-6">La Sensación de "Estar Allí"</h3>
-                            <p class="text-lg text-gray-700 mb-8 leading-relaxed">El entorno debe ser amigable, universal y relajante para reducir la ansiedad y fomentar la participación.</p>
-                            <ul class="space-y-5">
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">UI Simple y Diegética:</strong> <span class="text-gray-700">Iconos grandes, poco texto, alto contraste. El progreso se mostrará en el entorno (marcador de pared) o en un 'reloj inteligente' virtual.</span></div>
-                                </li>
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Entorno Relajante:</strong> <span class="text-gray-700">Estilo visual limpio, brillante y colorido. Evitar diseños "clínicos" u "hospitalarios".</span></div>
-                                </li>
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Avatar:</strong> <span class="text-gray-700">Manos flotantes y torso simple, con personalización de guantes/colores para atraer a los niños.</span></div>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Pestaña 3: Interacción -->
-                        <div id="interaccion" class="tab-content hidden">
-                            <h3 class="text-3xl font-bold text-CybertronixBlue mb-6">Interacción Accesible</h3>
-                            <p class="text-lg text-gray-700 mb-8 leading-relaxed">Las interacciones deben ser claras, de bajo esfuerzo y diseñadas para manos con posible debilidad o fatiga.</p>
-                            <ul class="space-y-5">
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Agarre por Defecto: Toggle.</strong> <span class="text-gray-700">Presionar una vez para agarrar, presionar de nuevo para soltar. Esto evita la fatiga de mantener presionado el botón de agarre.</span></div>
-                                </li>
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Controles Simples:</strong> <span class="text-gray-700">Interacciones basadas en Gatillo (seleccionar) y Agarre (sostener). Sticks usados solo para movimiento (teletransporte/giro).</span></div>
-                                </li>
-                                <li class="flex items-start group">
-                                    <span class="text-CybertronixGreen font-bold text-2xl mr-4 transition-transform group-hover:scale-110">►</span>
-                                    <div class="flex-1"><strong class="text-neutral-900 text-lg">Feedback Háptico:</strong> <span class="text-gray-700">Vibraciones suaves para indicar éxito (completar repetición), límites (rango de movimiento seguro) y agarre de objetos.</span></div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 3.0 Mecánicas y Flujo de Juego -->
-        <section id="mecanicas" class="py-24 bg-gradient-to-b from-neutral-100 to-white">
-            <h2 class="text-4xl font-extrabold text-center mb-8 text-gray-900">Flujo de Juego y Mecánicas Terapéuticas</h2>
-            <p class="text-center text-lg text-gray-600 max-w-3xl mx-auto mb-20 leading-relaxed px-6">
-                El juego sigue un modelo de "hub-and-spoke" (centro y radios). El paciente comienza en un tutorial, luego accede a una "Sala de Inicio" central desde donde puede elegir qué minijuego terapéutico jugar. <span class="font-semibold text-CybertronixBlue">Haz clic en una sala para ver sus detalles.</span>
-            </p>
-
-            <div class="max-w-7xl mx-auto px-6">
-                <!-- Diagrama de Flujo -->
-                <div class="text-center mb-16">
-                    <div class="inline-block bg-gradient-to-r from-CybertronixGreen to-green-400 text-white font-bold py-4 px-8 rounded-xl shadow-lg text-lg hover:scale-105 transition-transform">Sala Tutorial (Fase 1)</div>
-                    <div class="text-5xl text-gray-400 my-4">↓</div>
-                    <div class="inline-block bg-gradient-to-r from-CybertronixBlue to-cyan-400 text-white font-bold py-6 px-14 rounded-xl shadow-xl text-2xl hover:scale-105 transition-transform">Sala Inicio (Hub Central - Fase 2)</div>
-                    <div class="text-5xl text-gray-400 my-4">↓</div>
-                    <p class="text-xl text-gray-700 mb-8 font-semibold">El paciente elige una actividad:</p>
-                </div>
-                
-                <!-- Rejilla de Salas -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6 mb-12">
-                    <button class="sala-btn" data-sala="gimnasia" aria-label="Ver detalles de Gimnasia">🏋️ Gimnasia (Escalar)</button>
-                    <button class="sala-btn" data-sala="rumba" aria-label="Ver detalles de Rumba Terapia">💃 Rumba Terapia</button>
-                    <button class="sala-btn" data-sala="bolos" aria-label="Ver detalles de Bolos">🎳 Bolos</button>
-                    <button class="sala-btn" data-sala="espadas" aria-label="Ver detalles de Sala de Espadas">⚔️ Sala de Espadas</button>
-                    <button class="sala-btn" data-sala="basket" aria-label="Ver detalles de Basket">🏀 Basket</button>
-                    <button class="sala-btn" data-sala="disparo" aria-label="Ver detalles de Campo de Disparo">🎯 Campo de Disparo</button>
-                    <button class="sala-btn" data-sala="pesca" aria-label="Ver detalles de Mini Juegos">🎣 Mini Juegos (Pesca)</button>
-                    <button class="sala-btn" data-sala="meditacion" aria-label="Ver detalles de Meditación">🧘 Meditación (Relajación)</button>
-                </div>
-                
-                <!-- Panel de Detalles -->
-                <div id="sala-detail-panel" class="p-10 rounded-2xl shadow-lg border-2 border-gray-200 min-h-[350px] transition-all">
-                    <h3 id="sala-titulo" class="text-4xl font-extrabold text-CybertronixBlue mb-4">Selecciona una Sala</h3>
-                    <p id="sala-instruccion" class="text-xl text-gray-600">Haz clic en una de las actividades de arriba para ver sus objetivos terapéuticos y mecánicas de juego.</p>
-                    
-                    <div id="sala-contenido" class="hidden grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
-                        <div class="sala-detail-card">
-                            <div class="sala-detail-icon">🎮</div>
-                            <h4 class="text-xl font-bold text-neutral-900 mb-3">Mecánica de Juego</h4>
-                            <p id="sala-mecanica" class="text-gray-700 leading-relaxed"></p>
-                        </div>
-                        <div class="sala-detail-card">
-                            <div class="sala-detail-icon">🏥</div>
-                            <h4 class="text-xl font-bold text-neutral-900 mb-3">Objetivo Terapéutico</h4>
-                            <p id="sala-terapia" class="text-gray-700 leading-relaxed"></p>
-                        </div>
-                        <div class="sala-detail-card">
-                            <div class="sala-detail-icon">📊</div>
-                            <h4 class="text-xl font-bold text-neutral-900 mb-3">Escalabilidad (Dificultad)</h4>
-                            <p id="sala-escalabilidad" class="text-gray-700 leading-relaxed"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 4.0 y 5.0 Entorno -->
-        <section id="entorno" class="py-24 bg-gradient-to-br from-neutral-800 to-neutral-900 text-white">
-            <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-16">
-                <div class="animate-fade-in-up">
-                    <div class="text-5xl mb-6">🎵</div>
-                    <h2 class="text-4xl font-extrabold mb-8 text-CybertronixGreen">Diseño de Audio 3D</h2>
-                    <p class="text-lg text-gray-300 mb-8 leading-relaxed">El audio es fundamental para la inmersión y el feedback. Usará audio espacial 3D para guiar al paciente.</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <span class="text-CybertronixGreen mr-3 text-xl">✓</span>
-                            <span class="text-gray-200">Instrucciones de voz claras, calmadas y motivadoras.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-CybertronixGreen mr-3 text-xl">✓</span>
-                            <span class="text-gray-200">Voces seleccionables (calmada, enérgica, animada).</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-CybertronixGreen mr-3 text-xl">✓</span>
-                            <span class="text-gray-200">Feedback positivo (jingles, aplausos) al completar repeticiones.</span>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-CybertronixGreen mr-3 text-xl">✓</span>
-                            <span class="text-gray-200">Biblioteca de música variada (infantil, pop, relajante, clásica) a elección del paciente.</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="animate-fade-in-up" style="animation-delay: 0.2s;">
-                    <div class="text-5xl mb-6">⚙️</div>
-                    <h2 class="text-4xl font-extrabold mb-8 text-CybertronixGreen">Requisitos Técnicos Clave</h2>
-                    <p class="text-lg text-gray-300 mb-8 leading-relaxed">El rendimiento no es negociable. La meta es <span class="font-bold text-CybertronixBlue">cero 'frame drops'</span> para evitar el mareo.</p>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <span class="text-CybertronixBlue mr-3 text-xl">▸</span>
-                            <div><strong class="text-white">FPS Objetivo:</strong> <span class="text-gray-200">90 FPS (PCVR) / 72-90 FPS (Quest 2-3) estables.</span></div>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-CybertronixBlue mr-3 text-xl">▸</span>
-                            <div><strong class="text-white">Gráficos:</strong> <span class="text-gray-200">Estilo 'low poly' o estilizado, limpio y brillante.</span></div>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-CybertronixBlue mr-3 text-xl">▸</span>
-                            <div><strong class="text-white">Iluminación:</strong> <span class="text-gray-200">Priorizar 'baked lighting' (luz horneada) para máximo rendimiento en Standalone.</span></div>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-CybertronixBlue mr-3 text-xl">▸</span>
-                            <div><strong class="text-white">Renderizado:</strong> <span class="text-gray-200">Single Pass Instanced Rendering (SPIR) obligatorio.</span></div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6.0 Estrategia de Prototipado -->
-        <section id="estrategia" class="py-24 bg-white">
-            <h2 class="text-4xl font-extrabold text-center mb-20 text-gray-900">Estrategia de Prototipado y Pruebas</h2>
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="flex flex-col md:flex-row justify-between items-start space-y-12 md:space-y-0 md:space-x-6">
-                    
-                    <div class="flex-1 text-center group">
-                        <div class="phase-number w-24 h-24 bg-gradient-to-br from-CybertronixBlue to-cyan-500 text-white text-4xl font-extrabold rounded-2xl flex items-center justify-center mx-auto shadow-xl mb-6">1</div>
-                        <h3 class="text-2xl font-bold mt-4 mb-4 text-gray-900">Fase 1: Prototipo de Confort</h3>
-                        <p class="text-gray-600 px-4 leading-relaxed">Probar solo locomoción (teletransporte) y calibración en un entorno de "cajas grises". <span class="font-semibold text-CybertronixBlue">Métrica: Cero mareos.</span></p>
-                    </div>
-
-                    <div class="text-5xl text-gray-300 hidden md:block self-center">→</div>
-
-                    <div class="flex-1 text-center group">
-                        <div class="phase-number w-24 h-24 bg-gradient-to-br from-CybertronixBlue to-cyan-500 text-white text-4xl font-extrabold rounded-2xl flex items-center justify-center mx-auto shadow-xl mb-6">2</div>
-                        <h3 class="text-2xl font-bold mt-4 mb-4 text-gray-900">Fase 2: Prototipo de Interacción</h3>
-                        <p class="text-gray-600 px-4 leading-relaxed">Probar agarre 'Toggle' y usabilidad de la UI (iconos grandes). <span class="font-semibold text-CybertronixBlue">Métrica: Intuitivo, cero fatiga de manos.</span></p>
-                    </div>
-
-                    <div class="text-5xl text-gray-300 hidden md:block self-center">→</div>
-
-                    <div class="flex-1 text-center group">
-                        <div class="phase-number w-24 h-24 bg-gradient-to-br from-CybertronixBlue to-cyan-500 text-white text-4xl font-extrabold rounded-2xl flex items-center justify-center mx-auto shadow-xl mb-6">3</div>
-                        <h3 class="text-2xl font-bold mt-4 mb-4 text-gray-900">Fase 3: Bucle de Juego</h3>
-                        <p class="text-gray-600 px-4 leading-relaxed">Probar una sala de terapia completa (ej. Bolos) con audio y feedback de progreso.</p>
-                    </div>
-
-                    <div class="text-5xl text-gray-300 hidden md:block self-center">→</div>
-
-                    <div class="flex-1 text-center group">
-                        <div class="phase-number w-24 h-24 bg-gradient-to-br from-CybertronixGreen to-green-400 text-white text-5xl font-extrabold rounded-2xl flex items-center justify-center mx-auto shadow-xl mb-6">✓</div>
-                        <h3 class="text-2xl font-bold mt-4 mb-4 text-gray-900">Validación Clínica</h3>
-                        <p class="text-gray-600 px-4 leading-relaxed">Pruebas supervisadas por fisioterapeutas reales para validar los objetivos terapéuticos y la seguridad.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-neutral-900 text-gray-400 py-10 text-center">
-        <p class="text-lg">&copy; 2025 <span class="text-CybertronixBlue font-semibold">Cybertronix</span> - Documento de Diseño de Juego Interactivo "VR Therapy Center".</p>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-
-            // Datos de las Salas
-            const salaData = {
-                gimnasia: {
-                    titulo: "🏋️ Gimnasia (Escalar)",
-                    mecanica: "Agarre y escalada en un rocódromo virtual sencillo. El paciente debe estirar los brazos para agarrar el siguiente agarre.",
-                    terapia: "Ejercicio de extensión de brazos (dorsal, hombros), rotación de torso, coordinación mano-ojo.",
-                    escalabilidad: "Los agarres pueden estar más cerca (fácil) o más lejos (difícil). Pueden ser más grandes (fácil) o más pequeños (difícil)."
-                },
-                rumba: {
-                    titulo: "💃 Rumba Terapia / Rumbon",
-                    mecanica: "Un juego de ritmo. El paciente debe golpear o tocar objetivos que vienen hacia él al ritmo de la música, requiriendo que mueva brazos, torso y gire la cabeza.",
-                    terapia: "Movilidad de brazos, rotación de torso, movilidad de cuello/cabeza, ejercicio cardiovascular ligero.",
-                    escalabilidad: "Velocidad de los objetivos (lenta/rápida), cantidad de objetivos, música (infantil, pop, clásica)."
-                },
-                bolos: {
-                    titulo: "🎳 Bolos (Bowling)",
-                    mecanica: "Agarrar la bola de bolos (ligera) y realizar el movimiento de balanceo para lanzarla.",
-                    terapia: "Movimiento controlado de hombro y brazo, coordinación, equilibrio (si está de pie).",
-                    escalabilidad: "Peso simulado de la bola (ligero/muy ligero), ancho de la pista, cantidad de bolos."
-                },
-                espadas: {
-                    titulo: "⚔️ Sala para Espadas",
-                    mecanica: "Usar una espada de espuma (ligera) o un sable de luz para cortar objetivos blandos (frutas, bloques) que vuelan lentamente desde diferentes ángulos.",
-                    terapia: "Rango de movimiento del brazo, velocidad de reacción, rotación del torso, seguimiento visual.",
-                    escalabilidad: "Velocidad y tamaño de los objetivos. Para niños, pueden ser globos; para adultos, frutas."
-                },
-                basket: {
-                    titulo: "🏀 Basket (Baloncesto)",
-                    mecanica: "Agarrar una pelota y lanzarla a una canasta. La canasta puede cambiar de posición para fomentar el movimiento.",
-                    terapia: "Ejercicio de extensión de brazo, coordinación mano-ojo, cálculo de trayectoria.",
-                    escalabilidad: "Tamaño del aro (grande/pequeño), distancia a la canasta."
-                },
-                disparo: {
-                    titulo: "🎯 Campo de Disparo",
-                    mecanica: "Usar una pistola de juguete (ligera, tipo pistola de agua) para apuntar y disparar a dianas estáticas o de movimiento lento.",
-                    terapia: "Precisión de mano, rotación de muñeca, seguimiento visual y movilidad de cabeza/cuello.",
-                    escalabilidad: "Tamaño y velocidad de las dianas. Tema visual (ej. patos de feria para niños)."
-                },
-                pesca: {
-                    titulo: "🎣 Mini Juegos (Pesca)",
-                    mecanica: "Sostener una caña de pescar, lanzarla y girar un carrete virtual.",
-                    terapia: "Movimientos finos de muñeca (girar carrete), movimiento de hombro (lanzar).",
-                    escalabilidad: "Resistencia simulada del \"pez\", velocidad requerida para girar el carrete."
-                },
-                meditacion: { 
-                    titulo: "🧘 Meditación (Relajación)",
-                    mecanica: "Sesión guiada sin interacción física (excepto por comandos de voz o gestos de mano simples para cambiar el ambiente). El paciente elige un entorno visual calmado (bosque, playa).",
-                    terapia: "Reducción del estrés, manejo de dolor crónico, mejora de la concentración y calidad del sueño. La mecánica central es la **Terapia Auditiva**: se usan sonidos binaurales y música con frecuencias específicas para ayudar al cerebro a entrar en estados de calma (ondas Theta/Delta).",
-                    escalabilidad: "Duración de la sesión (5, 15, 30 min), tipo de voz guía (calmada/motivadora), y selección de música/frecuencias."
-                }
-            };
-
-            // Tabs
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.dataset.tab;
-
-                    tabButtons.forEach(btn => btn.classList.remove('active-tab'));
-                    button.classList.add('active-tab');
-
-                    tabContents.forEach(content => {
-                        if (content.id === tabId) {
-                            content.classList.remove('hidden');
-                            content.style.animation = 'fadeInUp 0.5s ease-out';
-                        } else {
-                            content.classList.add('hidden');
-                        }
-                    });
-                });
-            });
-
-            // Salas
-            const salaButtons = document.querySelectorAll('.sala-btn');
-            const salaTitulo = document.getElementById('sala-titulo');
-            const salaInstruccion = document.getElementById('sala-instruccion');
-            const salaContenido = document.getElementById('sala-contenido');
-            const salaMecanica = document.getElementById('sala-mecanica');
-            const salaTerapia = document.getElementById('sala-terapia');
-            const salaEscalabilidad = document.getElementById('sala-escalabilidad');
-
-            let currentSala = null;
-
-            salaButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const salaId = button.dataset.sala;
-
-                    if (currentSala) {
-                        currentSala.classList.remove('active-sala');
-                    }
-                    button.classList.add('active-sala');
-                    currentSala = button;
-
-                    const data = salaData[salaId];
-                    if (data) {
-                        salaTitulo.textContent = data.titulo;
-                        salaMecanica.textContent = data.mecanica;
-                        salaTerapia.textContent = data.terapia;
-                        salaEscalabilidad.textContent = data.escalabilidad;
-
-                        salaInstruccion.classList.add('hidden');
-                        salaContenido.classList.remove('hidden');
-                        salaContenido.classList.add('grid');
-                        salaContenido.style.animation = 'fadeInUp 0.5s ease-out';
-                    }
-                });
-            });
-
-            // Smooth Scroll
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                    
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                    }
-                });
-            });
-
-            // Mobile Menu
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-
-            // Intersection Observer para animaciones al scroll
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -100px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.animate-fade-in-up').forEach(el => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
-                observer.observe(el);
-            });
-
-            // Activar primera pestaña
-            document.querySelector('.tab-btn[data-tab="comodidad"]').click();
-
-        });
-    </script>
+      container.appendChild(section);
+    }
+  </script>
 </body>
 </html>
