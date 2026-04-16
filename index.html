@@ -281,22 +281,19 @@
       pecDeck: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pec-Deck-Fly.gif",
       cableCrossover: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Crossover.gif",
       seatedRow: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Cable-Row.gif",
+      seatedRowMachine: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Seated-Row-Machine.gif",
+      dumbbellRow: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Row.gif",
+      bentOverDumbbellRow: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bent-Over-Dumbbell-Row.gif",
       latPulldown: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Lat-Pulldown.gif",
       lateralRaise: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lateral-Raise.gif",
       cableLateralRaise: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Cable-Lateral-Raise.gif",
-      benchPress: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bench-Press.gif",
-      bentRow: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Bent-Over-Row.gif",
       facePull: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Face-Pull.gif",
-      barbellCurl: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Curl.gif",
+      concentrationCurl: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Concentration-Curl.gif",
       hammerCurl: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Hammer-Curl.gif",
       pushup: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Push-Up.gif",
       pushdown: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Pushdown.gif",
-      closeGrip: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Close-Grip-Bench-Press.gif",
       shoulderPress: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Shoulder-Press.gif",
-      rdlBarbell: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Romanian-Deadlift.gif",
       rdlDb: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Romanian-Deadlift.gif",
-      deadlift: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Deadlift.gif",
-      hipThrust: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Barbell-Hip-Thrust.gif",
       legCurl: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Leg-Curl.gif",
       lunge: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Dumbbell-Lunge.gif",
       squatBody: "https://fitnessprogramer.com/wp-content/uploads/2021/02/Bodyweight-Squat.gif",
@@ -316,9 +313,11 @@
           { name: "Press inclinado con mancuernas", sets: "4x6-8", cue: "Pecho arriba, baja 2 segundos.", img: gif.inclinePress, link: yt("press inclinado mancuernas") },
           { name: "Press de pecho en maquina", sets: "3x8-10", cue: "Escapulas atras y recorrido completo.", img: gif.chestPressMachine, link: yt("chest press machine") },
           { name: "Pec deck fly", sets: "3x12-15", cue: "Aprieta el pecho al cerrar.", img: gif.pecDeck, link: yt("pec deck fly") },
+          { name: "Cruce en polea", sets: "3x12-15", cue: "Cruza al centro y controla la vuelta.", img: gif.cableCrossover, link: yt("cruce en polea") },
           { name: "Pushdown en polea", sets: "3x10-12", cue: "Codos pegados al cuerpo.", img: gif.pushdown, link: yt("triceps pushdown") },
           { name: "Fondos en banco", sets: "2x12-15", cue: "Recorrido controlado.", img: gif.benchDips, link: yt("bench dips") },
-          { name: "Elevacion de piernas", sets: "3x12-15", cue: "No uses impulso de cadera.", img: gif.legRaise, link: yt("elevaciones de piernas abdomen") }
+          { name: "Elevacion de piernas", sets: "3x12-15", cue: "No uses impulso de cadera.", img: gif.legRaise, link: yt("elevaciones de piernas abdomen") },
+          { name: "Russian twist", sets: "3x20", cue: "Gira con control y abdomen firme.", img: gif.russianTwist, link: yt("russian twist") }
         ]
       },
       {
@@ -327,10 +326,12 @@
         ex: [
           { name: "Jalon al pecho", sets: "4x8-10", cue: "Pecho alto, evita balanceo.", img: gif.latPulldown, link: yt("jalon al pecho") },
           { name: "Remo sentado en cable", sets: "3x8-10", cue: "Tira con codos, no con brazos.", img: gif.seatedRow, link: yt("remo sentado cable") },
+          { name: "Remo en maquina sentado", sets: "3x10-12", cue: "No eleves los hombros al tirar.", img: gif.seatedRowMachine, link: yt("remo en maquina") },
+          { name: "Remo con mancuerna a una mano", sets: "3x10 por lado", cue: "Espalda recta y codo hacia cadera.", img: gif.dumbbellRow, link: yt("remo mancuerna una mano") },
           { name: "Face pull en polea", sets: "3x12-15", cue: "Lleva la cuerda a la cara con control.", img: gif.facePull, link: yt("face pull") },
           { name: "Curl martillo con mancuernas", sets: "3x10-12", cue: "Muneca neutral, controla bajada.", img: gif.hammerCurl, link: yt("curl martillo") },
-          { name: "Curl alterno con mancuernas", sets: "2x10-12", cue: "Sin balanceo de torso.", img: gif.hammerCurl, link: yt("curl alterno mancuernas") },
-          { name: "Russian twist", sets: "3x20", cue: "Gira con control, no rapido.", img: gif.russianTwist, link: yt("russian twist") }
+          { name: "Curl concentrado", sets: "3x10-12", cue: "Sube sin mover el hombro.", img: gif.concentrationCurl, link: yt("curl concentrado") },
+          { name: "Elevacion de piernas", sets: "3x12-15", cue: "Sube con abdomen, no con impulso.", img: gif.legRaise, link: yt("elevaciones de piernas abdomen") }
         ]
       },
       {
@@ -339,9 +340,12 @@
         ex: [
           { name: "Press de hombro con mancuernas", sets: "4x8-10", cue: "No arquees la espalda.", img: gif.shoulderPress, link: yt("press hombro mancuernas") },
           { name: "Elevaciones laterales en polea", sets: "4x12-15", cue: "Sube hasta hombro, sin impulso.", img: gif.cableLateralRaise, link: yt("elevaciones laterales en polea") },
+          { name: "Elevaciones laterales con mancuernas", sets: "3x12-15", cue: "Controla la bajada.", img: gif.lateralRaise, link: yt("elevaciones laterales mancuernas") },
           { name: "Face pull", sets: "3x12-15", cue: "Lleva cuerda hacia la cara.", img: gif.facePull, link: yt("face pull") },
           { name: "Curl martillo", sets: "3x10-12", cue: "Codos quietos.", img: gif.hammerCurl, link: yt("curl martillo") },
-          { name: "Pushdown en polea", sets: "3x10-12", cue: "Separa cuerda al final.", img: gif.pushdown, link: yt("triceps pushdown") }
+          { name: "Curl concentrado", sets: "3x10-12", cue: "Subida limpia y bajada lenta.", img: gif.concentrationCurl, link: yt("curl concentrado") },
+          { name: "Pushdown en polea", sets: "3x10-12", cue: "Separa cuerda al final.", img: gif.pushdown, link: yt("triceps pushdown") },
+          { name: "Fondos en banco", sets: "2x12-15", cue: "Tronco estable y codos atras.", img: gif.benchDips, link: yt("bench dips") }
         ]
       },
       {
@@ -352,7 +356,10 @@
           { name: "Press de pecho en maquina", sets: "3x8-10", cue: "Controla la bajada.", img: gif.chestPressMachine, link: yt("chest press machine") },
           { name: "Cruce en polea", sets: "3x12-15", cue: "Aprieta fuerte al centro.", img: gif.cableCrossover, link: yt("cruce en polea") },
           { name: "Jalon al pecho", sets: "3x10-12", cue: "Enfoca en dorsales.", img: gif.latPulldown, link: yt("jalon al pecho") },
-          { name: "Remo sentado en cable", sets: "3x10-12", cue: "Pausa corta atras.", img: gif.seatedRow, link: yt("remo sentado cable") }
+          { name: "Remo sentado en cable", sets: "3x10-12", cue: "Pausa corta atras.", img: gif.seatedRow, link: yt("remo sentado cable") },
+          { name: "Remo con mancuerna inclinado", sets: "3x10-12", cue: "Sin girar el torso.", img: gif.bentOverDumbbellRow, link: yt("remo inclinado con mancuernas") },
+          { name: "Pec deck fly", sets: "2x15", cue: "Congestion controlada sin rebote.", img: gif.pecDeck, link: yt("pec deck fly") },
+          { name: "Face pull", sets: "2x15", cue: "Postura recta y codos altos.", img: gif.facePull, link: yt("face pull") }
         ]
       },
       {
@@ -364,7 +371,9 @@
           { name: "Peso muerto rumano con mancuernas", sets: "3x8-10", cue: "Cadera atras, espalda neutra.", img: gif.rdlDb, link: yt("peso muerto rumano mancuernas") },
           { name: "Curl femoral", sets: "3x12-15", cue: "Sube con control y baja lento.", img: gif.legCurl, link: yt("curl femoral maquina") },
           { name: "Sentadilla con salto", sets: "3x12", cue: "Explosivo al subir y estable al caer.", img: gif.jumpSquat, link: yt("sentadilla con salto") },
-          { name: "Russian twist + Elevacion de piernas", sets: "3 rondas", cue: "15+15 por lado y 12 reps.", img: gif.russianTwist, link: yt("rutina abdomen gimnasio") }
+          { name: "Peso muerto rumano unilateral con mancuerna", sets: "3x10 por lado", cue: "Equilibrio y cadera alineada.", img: gif.rdlDb, link: yt("peso muerto rumano unilateral") },
+          { name: "Elevacion de piernas", sets: "3x12-15", cue: "Sube con el abdomen, sin impulso.", img: gif.legRaise, link: yt("elevaciones de piernas abdomen") },
+          { name: "Russian twist", sets: "3x20", cue: "Controla el giro completo.", img: gif.russianTwist, link: yt("russian twist") }
         ]
       }
     ];
